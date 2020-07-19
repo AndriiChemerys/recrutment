@@ -35,8 +35,8 @@
       <div>
         <p>
           <b>Podsumowanie:</b><br/>
-          Waga produków: {{this.totalWeight}}<br/>
-          Suma produktów: {{this.totalPacks}}<br/>
+          Waga produków: {{this.totalWeight}} kg<br/>
+          Suma produktów: {{this.totalPacks}} szt.<br/>
         </p>
       </div>
     </section>
@@ -84,13 +84,10 @@ export default {
     };
   },
   methods: {
-    calcWeight(addType, addQuantity) {
+    calcTotal(addType, addQuantity) {
       if (addType == "kg") {
-        this.totalWeight = this.totalWeight + addQuantity;
-      }
-    },
-    calcPacks(addType, addQuantity) {
-      if (addType == "szt") {
+        this.totalWeight += addQuantity;
+      } else if (addType == "szt") {
         this.totalPacks += addQuantity;
       }
     },
@@ -105,8 +102,7 @@ export default {
             addQuantity,
             addType,
           });
-          this.calcWeight(addType, addQuantity);
-          this.calcPacks(addType, addQuantity);
+          this.calcTotal(addType, addQuantity);
         }
       }
       console.log(this.options);
