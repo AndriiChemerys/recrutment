@@ -3,14 +3,14 @@
     <section class="cart">
       <div class="cart__product-name">
         <label>Podaj nazwe produktu:</label><br />
-        <input type='text' id='productInput' v-model="productName">
+        <input class="input" type='text' id='productInput' v-model="productName">
       </div>
       <div class="cart__product-quantity">
         <label>Ilość:</label><br />
-        <input type='number' id='quantityInput' v-model="productQuantity">
+        <input class="input" type='number' id='quantityInput' v-model="productQuantity">
       </div>
       <div class="cart__radio-container">
-        <input class="cart__radio cart__radio--packs" type="radio" name="quantity" value="szt" v-model="productType">Sztuki
+        <input class="cart__radio cart__radio--packs" type="radio" name="quantity" value="szt" checked v-model="productType">Sztuki
         <input class="cart__radio cart__radio--weight" type="radio" name="quantity" value="kg" v-model="productType">Waga<br/>
       </div>
       <div class="cart__product-type">
@@ -21,7 +21,7 @@
           </option>
         </select>
       </div>
-      <button v-on:click="addProduct">Dodaj</button>
+      <button class="button" v-on:click="addProduct">Dodaj</button>
     </section>
     <section class="items-list">
       <ul>
@@ -129,5 +129,35 @@ li {
 
 a {
   color: #42b983;
+}
+
+* {
+  margin: 5px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 18px;
+}
+
+button {
+  width: 200px;
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 10px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.input,
+.cart__selected {
+  width: 200px;
+  padding: 7px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 </style>
