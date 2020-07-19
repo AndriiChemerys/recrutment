@@ -2,7 +2,7 @@
 
 ---
 
-link: https://
+link: https://andriichemerys.github.io/mdb_intership_test_2020/dist/index.html
 
 ---
 
