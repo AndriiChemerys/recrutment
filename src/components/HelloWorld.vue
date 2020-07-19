@@ -1,42 +1,95 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div>
+    <section class="cart">
+      <div class="cart__product-name">
+        <label>Podaj nazwe produktu:</label><br />
+        <input type='text' id='productInput' v-model="productName">
+      </div>
+      <div class="cart__product-quantity">
+        <label>Ilość:</label><br />
+        <input type='text' id='quantityInput' v-model="productQuantity">
+      </div>
+      <div class="cart__radio-container">
+        <input class="cart__radio cart__radio--packs" type="radio" name="quantity" value="packs">Sztuki
+        <input class="cart__radio cart__radio--weight" type="radio" name="quantity" value="weight" />Waga<br />
+      </div>
+      <div class="cart__product-type">
+        <label>Kategoria:</label><br />
+        <select v-model="selected" class="cart__selected">
+          <option v-for="option in options" v-bind:value="option.value" :key="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+        {{selected}}
+      </div>
+      <button v-on:click="addProduct">Dodaj</button>
+    </section>
+    <section>
+      <ul>
+        <li v-for="option in options" :key="option">{{option.text}}:
+          <ul>
+            <li v-for="arr in option.arr" :key="arr">{{arr.addName}} - {{arr.addQuantity}} {{}}</li>
+          </ul>
+          <p>- - -</p>
+        </li>
+      </ul>
+    </section>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
+  name: "HelloWorld",
+  data() {
+    return {
+      productName: "",
+      productQuantity: "",
+      selected: "product1",
+      options: [
+        {
+          text: "Warzywa",
+          value: "product1",
+          arr: [],
+        },
+        {
+          text: "Owoce",
+          value: "product2",
+          arr: [],
+        },
+        {
+          text: "Nabiał",
+          value: "product3",
+          arr: [],
+        },
+        {
+          text: "Pieczywo",
+          value: "product4",
+          arr: [],
+        },
+        {
+          text: "Artykuły higieniczne",
+          value: "product5",
+          arr: [],
+        },
+      ],
+    };
+  },
+  methods: {
+    addProduct() {
+      let addName = this.productName;
+      let addQuantity = this.productQuantity;
+      for (let i = 0; i < this.options.length; i++) {
+        if (this.selected == this.options[i].value) {
+          this.options[i].arr.push({
+            addName,
+            addQuantity,
+          });
+        }
+      }
+      console.log(this.options);
+    },
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -44,14 +97,17 @@ export default {
 h3 {
   margin: 40px 0 0;
 }
+
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
-  display: inline-block;
+  /* display: inline-block; */
   margin: 0 10px;
 }
+
 a {
   color: #42b983;
 }
