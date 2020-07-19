@@ -7,11 +7,11 @@
       </div>
       <div class="cart__product-quantity">
         <label>Ilość:</label><br />
-        <input type='text' id='quantityInput' v-model="productQuantity">
+        <input type='number' id='quantityInput' v-model="productQuantity">
       </div>
       <div class="cart__radio-container">
-        <input class="cart__radio cart__radio--packs" type="radio" name="quantity" value="packs">Sztuki
-        <input class="cart__radio cart__radio--weight" type="radio" name="quantity" value="weight" />Waga<br />
+        <input class="cart__radio cart__radio--packs" type="radio" name="quantity" value="szt" v-model="productType">Sztuki
+        <input class="cart__radio cart__radio--weight" type="radio" name="quantity" value="kg" v-model="productType">Waga<br/>
       </div>
       <div class="cart__product-type">
         <label>Kategoria:</label><br />
@@ -20,19 +20,25 @@
             {{ option.text }}
           </option>
         </select>
-        {{selected}}
       </div>
       <button v-on:click="addProduct">Dodaj</button>
     </section>
-    <section>
+    <section class="items-list">
       <ul>
         <li v-for="option in options" :key="option">{{option.text}}:
           <ul>
-            <li v-for="arr in option.arr" :key="arr">{{arr.addName}} - {{arr.addQuantity}} {{}}</li>
+            <li v-for="arr in option.arr" :key="arr">{{arr.addName}} - {{arr.addQuantity}} {{arr.addType}}</li>
           </ul>
           <p>- - -</p>
         </li>
       </ul>
+      <div>
+        <p>
+          <b>Podsumowanie:</b><br/>
+          Waga produków: {{this.totalWeight}}<br/>
+          Suma produktów: {{this.totalPacks}}<br/>
+        </p>
+      </div>
     </section>
   </div>
 </template>
@@ -43,8 +49,11 @@ export default {
   data() {
     return {
       productName: "",
-      productQuantity: "",
+      productQuantity: 0,
+      productType: "",
       selected: "product1",
+      totalWeight: 0,
+      totalPacks: 0,
       options: [
         {
           text: "Warzywa",
@@ -75,15 +84,29 @@ export default {
     };
   },
   methods: {
+    calcWeight(addType, addQuantity) {
+      if (addType == "kg") {
+        this.totalWeight = this.totalWeight + addQuantity;
+      }
+    },
+    calcPacks(addType, addQuantity) {
+      if (addType == "szt") {
+        this.totalPacks += addQuantity;
+      }
+    },
     addProduct() {
       let addName = this.productName;
-      let addQuantity = this.productQuantity;
+      let addQuantity = parseInt(this.productQuantity);
+      let addType = this.productType;
       for (let i = 0; i < this.options.length; i++) {
         if (this.selected == this.options[i].value) {
           this.options[i].arr.push({
             addName,
             addQuantity,
+            addType,
           });
+          this.calcWeight(addType, addQuantity);
+          this.calcPacks(addType, addQuantity);
         }
       }
       console.log(this.options);
